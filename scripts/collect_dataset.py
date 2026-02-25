@@ -1,8 +1,23 @@
 import cv2
 import os
+import argparse
 
-# CHANGE THIS TO YOUR NAME
-person_name = "Sagar"
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Collect face images for a person")
+    parser.add_argument(
+        "--name",
+        default=os.environ.get("PERSON_NAME", "Sagar"),
+        
+    )
+    return parser.parse_args()
+
+
+args = parse_args()
+person_name = args.name.strip()
+
+if not person_name:
+    raise ValueError("Person name cannot be empty")
 
 # Dataset folder
 dataset_path = "dataset"

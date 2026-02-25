@@ -3,6 +3,7 @@ import os
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
+from sklearn.dummy import DummyClassifier
 
 # Paths
 embeddings_path = "embeddings/embeddings.pickle"
@@ -18,6 +19,9 @@ with open(embeddings_path, "rb") as f:
 X = data["embeddings"]
 y = data["names"]
 
+if len(X) == 0 or len(y) == 0:
+    raise ValueError("No embeddings found. Please collect dataset and extract embeddings first.")
+
 # Encode labels
 print("[INFO] Encoding labels...")
 
@@ -27,11 +31,15 @@ labels = le.fit_transform(y)
 # Train SVM
 print("[INFO] Training SVM model...")
 
-recognizer = SVC(
-    C=1.0,
-    kernel="linear",
-    probability=True
-)
+if len(le.classes_) < 2:
+    print("[WARN] Only one class found. Using fallback classifier for single-person recognition.")
+    recognizer = DummyClassifier(strategy="most_frequent")
+else:
+    recognizer = SVC(
+        C=1.0,
+        kernel="linear",
+        probability=True
+    )
 
 recognizer.fit(X, labels)
 
