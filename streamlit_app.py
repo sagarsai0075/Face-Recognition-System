@@ -198,8 +198,8 @@ def main():
 
     detector, embedder = load_networks()
 
-    st.header("Step 1: Training")
-    person_name = st.text_input("Enter name", placeholder="e.g. Tariq").strip()
+    st.header("Step 1: Capture")
+    person_name = st.text_input("Enter name", placeholder="e.g. Rahul").strip()
     train_capture = st.camera_input("Capture image for training", key="train_capture")
 
     if st.button("Capture for Training", type="primary"):
