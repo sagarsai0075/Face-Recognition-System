@@ -196,13 +196,27 @@ def main():
     st.set_page_config(page_title="Face Recognition", page_icon="📷")
     st.title("Face Recognition System")
 
+    
+    st.markdown(
+        """
+        <style>
+        div.stButton > button:first-child {
+            background-color: #1976d2 !important;
+            color: white !important;
+            border-color: #1976d2 !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     detector, embedder = load_networks()
 
     st.header("Step 1: Capture")
     person_name = st.text_input("Enter name", placeholder="e.g. Rahul").strip()
     train_capture = st.camera_input("Capture image for training", key="train_capture")
 
-    if st.button("Capture for Training", type="primary"):
+    if st.button("Start Training", type="primary"):
         if not person_name:
             st.error("Please enter a name first.")
         elif train_capture is None:
@@ -220,7 +234,7 @@ def main():
     st.header("Step 2: Recognize")
     recognize_capture = st.camera_input("Capture image for recognition", key="recognize_capture")
 
-    if st.button("Recognize"):
+    if st.button("Recognize", type="primary"):
         if recognize_capture is None:
             st.error("Please capture an image first.")
         else:
